@@ -1,7 +1,7 @@
 # books/admin.py
 
 from django.contrib import admin
-from .models import Book, Category,OrderedBook
+from .models import Book, Category,OrderedBook,PopularBook
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -13,6 +13,13 @@ class BookAdmin(admin.ModelAdmin):
     list_filter = ['available', 'category']
     search_fields = ['name', 'writer']
 
+##popular Book
+    
+@admin.register(PopularBook)
+class PopularBookAdmin(admin.ModelAdmin):
+    list_display = ['id', 'name', 'category', 'writer', 'fee', 'available']
+    list_filter = ['available', 'category']
+    search_fields = ['name', 'writer']
 
 
 @admin.register(OrderedBook)

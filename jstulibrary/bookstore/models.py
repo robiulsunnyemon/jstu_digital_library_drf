@@ -23,6 +23,21 @@ class Book(models.Model):
 
 
 
+##popular book
+
+
+class PopularBook(models.Model):
+    name = models.CharField(max_length=255)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='PopularBook')
+    description = models.TextField()
+    writer = models.CharField(max_length=255)
+    fee = models.DecimalField(max_digits=10, decimal_places=2)
+    validation = models.IntegerField(help_text="Validation period in days")
+    item = models.IntegerField(default=1)
+    available = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name
 
 
 
