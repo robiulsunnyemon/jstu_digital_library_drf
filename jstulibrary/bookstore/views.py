@@ -8,6 +8,7 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 from .models import Book, Category,PopularBook
+from rest_framework.decorators import api_view
 from .serializers import BookSerializer, CategorySerializer,OrderedBookSerializer,PopularBookSerializer,RegisterSerializer
 
 
@@ -30,6 +31,7 @@ class BookViewSet(viewsets.ModelViewSet):
     serializer_class = BookSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['category__name']
+    search_fields = ['title']
 
     def create(self, request, *args, **kwargs):
         is_many = isinstance(request.data, list)
@@ -105,3 +107,19 @@ class LoginView(APIView):
             token, created = Token.objects.get_or_create(user=user)
             return Response({'token': token.key}, status=status.HTTP_200_OK)
         return Response({'error': 'Invalid Credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+    
+
+
+
+    ##fial
+
+@api_view(['GET'])
+def medicine_by_name(request, name):
+ 
+    medicines = Book.objects.filter(name__icontains=name)
+  
+    if not medicines:
+        return Response({"message": "No medicines found with that name"}, status=404)
+    
+    serializer = BookSerializer(medicines, many=True)
+    return Response(serializer.data)      
